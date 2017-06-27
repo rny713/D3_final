@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>Project</title>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <link rel="stylesheet" href="css/TW_bar.css">
+</head>
+
+<body>
+    <header>
+        <a href="index.html">台灣</a>
+        <a href="JP_pie.html">日本</a>
+        <a href="US_map.html">美國</a>
+    </header>
+    <h1>台灣暢銷專輯銷售量（前20名）</h1>
+    <svg width="800" height="600">
+        <g class="content"></g>
+        <g class="date"></g>
+        <g class="amount"></g>
+    </svg>
+    <h1>2000 年以後台灣暢銷專輯銷售量（前20名）</h1>
+    <svg id="svg2" width="800" height="700">
+        <g class="content"></g>
+        <g class="date"></g>
+        <g class="amount"></g>
+    </svg>
+    <img src="img/timeline-music.jpg" alt="">
+    <script>
+        // ---------資料定義 (圖一)-----------
+
+        var dataSet = [{
+            "date": "1997",
+            "singer": "張惠妹",
+            "album": "Bad boy",
+            "amount": 138,
+        }, {
+            "date": "1993",
+            "singer": "張學友",
+            "album": "吻別",
+            "amount": 136,
+        }, {
+            "date": "1995",
+            "singer": "張學友",
+            "album": "真愛新曲+精選",
+            "amount": 122,
+        }, {
+            "date": "1992",
+            "singer": "江蕙",
+            "album": "酒後的心聲",
+            "amount": 116,
+        }, {
+            "date": "1997",
+            "singer": "James Horner",
+            "album": "鐵達尼號電影原聲大碟",
+            "amount": 110,
+        }, {
+            "date": "1996",
+            "singer": "張惠妹",
+            "album": "姊妹",
+            "amount": 108,
+        }, {
+            "date": "1996",
+            "singer": "張學友",
+            "album": "忘記你我做不到",
+            "amount": 106,
+        }, {
+            "date": "1989",
+            "singer": "陳淑樺",
+            "album": "跟你說，聽你說",
+            "amount": 105,
+        }, {
+            "date": "1998",
+            "singer": "任賢齊",
+            "album": "愛像太平洋",
+            "amount": 102,
+        }, {
+            "date": "1993",
+            "singer": "黃安",
+            "album": "新鴛鴦蝴蝶夢",
+            "amount": 94,
+        }, {
+            "date": "1993",
+            "singer": "	張學友",
+            "album": "祝福",
+            "amount": 91,
+        }, {
+            "date": "1999",
+            "singer": "江蕙",
+            "album": "半醉半清醒",
+            "amount": 90,
+        }, {
+            "date": "1999",
+            "singer": "張惠妹",
+            "album": "我可以抱你嗎？愛人",
+            "amount": 86,
+        }, {
+            "date": "1998",
+            "singer": "李玟",
+            "album": "DI DA DI",
+            "amount": 85,
+        }, {
+            "date": "1994",
+            "singer": "劉德華",
+            "album": "忘情水",
+            "amount": 85,
+        }, {
+            "date": "1994",
+            "singer": "巫啓賢",
+            "album": "太傻",
+            "amount": 84,
+        }, {
+            "date": "1997",
+            "singer": "張學友",
+            "album": "想和你去吹吹風",
+            "amount": 82,
+        }, {
+            "date": "1995",
+            "singer": "林憶蓮",
+            "album": "Love, Sandy",
+            "amount": 81,
+        }, {
+            "date": "1991",
+            "singer": "王菲",
+            "album": "天空",
+            "amount": 80,
+        }, {
+            "date": "1992",
+            "singer": "張信哲",
+            "album": "愛如潮水",
+            "amount": 79,
+        }, ];
+
+        // ---------資料定義 (圖二)-----------
+
+        var dataSet2 = [{
+                "date": "2000",
+                "singer": "陶喆",
+                "album": "I'm OK",
+                "amount": 43,
+            }, {
+                "date": "2000",
+                "singer": "張學友",
+                "album": "走過1999",
+                "amount": 42,
+            }, {
+                "date": "2001",
+                "singer": "周杰倫",
+                "album": "范特西",
+                "amount": 40,
+            }, {
+                "date": "2000",
+                "singer": "孫燕姿",
+                "album": "我要的幸福",
+                "amount": 38,
+            }, {
+                "date": "2002",
+                "singer": "周杰倫",
+                "album": "八度空間",
+                "amount": 37,
+            }, {
+                "date": "2000",
+                "singer": "張惠妹",
+                "album": "不顧一切",
+                "amount": 36,
+            }, {
+                "date": "2003",
+                "singer": "周杰倫",
+                "album": "葉惠美",
+                "amount": 35,
+            }, {
+                "date": "2003",
+                "singer": "蔡依林",
+                "album": "看我72變",
+                "amount": 34,
+            }, {
+                "date": "2004",
+                "singer": "周杰倫",
+                "album": "七里香",
+                "amount": 33,
+            }, {
+                "date": "2001",
+                "singer": "孫燕姿",
+                "album": "風箏",
+                "amount": 32,
+            }, {
+                "date": "2000",
+                "singer": "孫燕姿",
+                "album": "孫燕姿同名專輯",
+                "amount": 31,
+            }, {
+                "date": "2000",
+                "singer": "五月天",
+                "album": "愛情萬歲",
+                "amount": 30,
+            }, {
+                "date": "2000",
+                "singer": "周杰倫",
+                "album": "周杰倫同名專輯",
+                "amount": 30,
+            }, {
+                "date": "2000",
+                "singer": "蕭亞軒",
+                "album": "紅薔薇",
+                "amount": 30,
+            }, {
+                "date": "2000",
+                "singer": "蔡依林",
+                "album": "Don't Stop",
+                "amount": 30,
+            }, {
+                "date": "2001",
+                "singer": "五月天",
+                "album": "人生海海",
+                "amount": 30,
+            }, {
+                "date": "2003",
+                "singer": "梁靜茹",
+                "album": "戀愛的力量",
+                "amount": 30,
+            }, {
+                "date": "2004",
+                "singer": "蔡依林",
+                "album": "城堡",
+                "amount": 30,
+            }, {
+                "date": "1999",
+                "singer": "五月天",
+                "album": "五月天第一張創作專輯",
+                "amount": 30,
+            }, {
+                "date": "2000",
+                "singer": "張惠妹",
+                "album": "妹力新世紀精選",
+                "amount": 30,
+            }, {
+                "date": "2003",
+                "singer": "S.H.E",
+                "album": "Super Star",
+                "amount": 30,
+            }
+
+        ]
+
+        // ----------- 呼叫函式 -----------
+
+        bind(dataSet);
+        render();
+        bind2(dataSet2);
+        render2();
+
+        // ----------- 資料綁定 & 畫圖一 -----------
+
+        function bind(dataSet) {
+            var selection = d3.select("svg")
+                .selectAll("rect")
+                .data(dataSet);
+            selection.enter().append("rect");
+            selection.exit().remove();
+
+            var selection_text_content = d3.select("svg")
+                .select("g.content")
+                .selectAll("text")
+                .data(dataSet);
+            selection_text_content.enter().append("text");
+            selection_text_content.exit().remove();
+
+            var selection_text_date = d3.select("svg")
+                .select("g.date")
+                .selectAll("text")
+                .data(dataSet);
+            selection_text_date.enter().append("text");
+            selection_text_date.exit().remove();
+
+            var selection_text_amount = d3.select("svg")
+                .select("g.amount")
+                .selectAll("text")
+                .data(dataSet);
+            selection_text_amount.enter().append("text");
+            selection_text_amount.exit().remove();
+        }
+
+        function render() {
+
+            d3.selectAll("svg>rect")
+                .attr({
+                    x: 400,
+                    y: function(d, i) {
+                        return 10 + 30 * i;
+                    },
+                    width: function(d, i) {
+                        return d.amount;
+                    },
+                    height: 18,
+                    fill: "#00baff"
+                });
+            d3.selectAll("svg>g.content>text")
+                .attr({
+                    x: 10,
+                    y: function(d, i) {
+                        return 25 + 30 * i;
+                    }
+                })
+                .text(function(d) {
+                    return d.singer + "  <" + d.album + ">  ";
+                });
+
+
+            d3.selectAll("svg>g.date>text")
+                .attr({
+                    x: 300,
+                    y: function(d, i) {
+                        return 25 + 30 * i;
+                    }
+                })
+                .text(function(d) {
+                    return d.date + "年";
+                });
+
+
+
+            d3.selectAll("svg>g.amount>text")
+                .attr({
+                    x: function(d) {
+                        return 400 + d.amount + 20
+                    },
+                    y: function(d, i) {
+                        return 25 + 30 * i;
+                    }
+                })
+                .text(function(d) {
+                    return d.amount + "萬";
+                });
+
+
+        }
+        // ----------- 資料綁定 & 畫圖二 -----------
+
+        function bind2(dataSet) {
+            var selection = d3.select("svg#svg2")
+                .selectAll("rect")
+                .data(dataSet);
+            selection.enter().append("rect");
+            selection.exit().remove();
+
+            var selection_text_content = d3.select("svg#svg2")
+                .select("g.content")
+                .selectAll("text")
+                .data(dataSet);
+            selection_text_content.enter().append("text");
+            selection_text_content.exit().remove();
+
+            var selection_text_date = d3.select("svg#svg2")
+                .select("g.date")
+                .selectAll("text")
+                .data(dataSet);
+            selection_text_date.enter().append("text");
+            selection_text_date.exit().remove();
+
+            var selection_text_amount = d3.select("svg#svg2")
+                .select("g.amount")
+                .selectAll("text")
+                .data(dataSet);
+            selection_text_amount.enter().append("text");
+            selection_text_amount.exit().remove();
+        }
+
+        function render2() {
+
+            d3.selectAll("svg#svg2>rect")
+                .attr({
+                    x: 400,
+                    y: function(d, i) {
+                        return 10 + 30 * i;
+                    },
+                    width: function(d, i) {
+                        return d.amount;
+                    },
+                    height: 18,
+                    fill: "#245a03"
+                });
+            d3.selectAll("svg#svg2>g.content>text")
+                .attr({
+                    x: 10,
+                    y: function(d, i) {
+                        return 25 + 30 * i;
+                    }
+                })
+                .text(function(d) {
+                    return d.singer + "  <" + d.album + ">  ";
+                });
+
+
+            d3.selectAll("svg#svg2>g.date>text")
+                .attr({
+                    x: 300,
+                    y: function(d, i) {
+                        return 25 + 30 * i;
+                    }
+                })
+                .text(function(d) {
+                    return d.date + "年";
+                });
+
+
+
+            d3.selectAll("svg#svg2>g.amount>text")
+                .attr({
+                    x: function(d) {
+                        return 400 + d.amount + 20
+                    },
+                    y: function(d, i) {
+                        return 25 + 30 * i;
+                    }
+                })
+                .text(function(d) {
+                    return d.amount + "萬";
+                });
+
+
+        }
+    </script>
+</body>
+
+</html>

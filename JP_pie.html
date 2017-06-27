@@ -1,0 +1,418 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <link rel="stylesheet" href="css/JP_pie.css">
+
+</head>
+
+<body>
+    <header>
+        <a href="index.html">台灣</a>
+        <a href="JP_pie.html">日本</a>
+        <a href="US_map.html">美國</a>
+    </header>
+    <script>
+        var w = 600;
+        var h = 350;
+
+        svg();
+        svg2();
+        svg3();
+        svg4();
+
+        // ---------資料定義 1-----------
+
+        var dataSet = [{
+            "genre": "J-POP",
+            "percentage": 53.2
+        }, {
+            "genre": "搖滾",
+            "percentage": 29.1
+        }, {
+            "genre": "動漫歌曲",
+            "percentage": 29.1
+        }, {
+            "genre": "古典樂",
+            "percentage": 24.1
+        }, {
+            "genre": "無特別偏好",
+            "percentage": 20.3
+        }];
+
+        // ---------資料定義 2-----------
+        var dataSet2 = [{
+            "genre": "J-POP",
+            "percentage": 58.9
+        }, {
+            "genre": "搖滾",
+            "percentage": 30.2
+        }, {
+            "genre": "古典樂",
+            "percentage": 25.2
+        }, {
+            "genre": "動漫歌曲",
+            "percentage": 22.3
+        }, {
+            "genre": "民謠",
+            "percentage": 19.9
+        }];
+
+        // ---------資料定義 3-----------
+        var dataSet3 = [{
+            "genre": "J-POP",
+            "percentage": 55.1
+        }, {
+            "genre": "民謠",
+            "percentage": 35.5
+        }, {
+            "genre": "古典樂",
+            "percentage": 27.7
+        }, {
+            "genre": "搖滾",
+            "percentage": 27.3
+        }, {
+            "genre": "爵士樂",
+            "percentage": 20
+        }];
+
+        // ---------資料定義 4-----------
+        var dataSet4 = [{
+            "genre": "民謠",
+            "percentage": 43.3
+        }, {
+            "genre": "古典樂",
+            "percentage": 39.1
+        }, {
+            "genre": "演歌",
+            "percentage": 30.1
+        }, {
+            "genre": "爵士樂",
+            "percentage": 27.4
+        }, {
+            "genre": "J-POP",
+            "percentage": 23.2
+        }];
+
+        // ----------- 定義畫布 1-----------
+        function svg() {
+            d3.select("body").append("svg").attr({
+                width: w,
+                height: h,
+                class: "svg1",
+            });
+            d3.select("svg").append("g").append("rect").attr({
+                width: "100%",
+                height: "100%",
+                fill: "#eee"
+            });
+
+            d3.select("svg").append("text")
+                .attr({
+                    x: w / 2 - 32,
+                    y: h / 2 + 5,
+                })
+                .text("30 歲以下");
+
+        }
+        // ----------- 定義畫布 2-----------
+        function svg2() {
+            d3.select("body").append("svg").attr({
+                width: w,
+                height: h,
+                class: "svg2",
+            });
+
+            d3.select("svg.svg2").append("g").append("rect").attr({
+                width: "100%",
+                height: "100%",
+                fill: "#eee"
+            });
+
+            d3.select("svg.svg2").append("text")
+                .attr({
+                    x: w / 2 - 18,
+                    y: h / 2 + 5,
+                })
+                .text("40 歲");
+
+        }
+
+        // ----------- 定義畫布 3-----------
+        function svg3() {
+            d3.select("body").append("svg").attr({
+                width: w,
+                height: h,
+                class: "svg3",
+            });
+
+            d3.select("svg.svg3").append("g").append("rect").attr({
+                width: "100%",
+                height: "100%",
+                fill: "#eee"
+            });
+
+            d3.select("svg.svg3").append("text")
+                .attr({
+                    x: w / 2 - 18,
+                    y: h / 2 + 5,
+                })
+                .text("50 歲");
+
+        }
+
+        // ----------- 定義畫布 4-----------
+        function svg4() {
+            d3.select("body").append("svg").attr({
+                width: w,
+                height: h,
+                class: "svg4",
+                display: "float"
+            });
+
+            d3.select("svg.svg4").append("g").append("rect").attr({
+                width: "100%",
+                height: "100%",
+                fill: "#eee"
+            });
+
+            d3.select("svg.svg4").append("text")
+                .attr({
+                    x: w / 2 - 32,
+                    y: h / 2 + 5,
+                })
+                .text("60 歲以上");
+
+        }
+
+        // ----------- 呼叫函式 -----------
+        bind(dataSet);
+        render();
+        bind2(dataSet2);
+        render2();
+        bind3(dataSet3);
+        render3();
+        bind4(dataSet4);
+        render4();
+        // ----------- 資料綁定 & 畫圖一 -----------
+
+        function bind(dataSet) {
+
+            var pie = d3.layout.pie()
+                .value(function(d) {
+                    return d.percentage;
+                });
+
+            var selection = d3.select("svg.svg1")
+                .selectAll("g.arc")
+                .data(pie(dataSet));
+
+
+
+            var g_arc = selection.enter().append("g").attr("class", "arc");
+            g_arc.append("path");
+            g_arc.append("text");
+            selection.exit().remove();
+        }
+
+        function render(dataSet) {
+            var outerR = 150;
+            var innerR = 50;
+            var arc = d3.svg.arc()
+                .outerRadius(outerR)
+                .innerRadius(innerR);
+
+            var fScale = d3.scale.category20();
+
+            d3.selectAll("g.arc")
+                //TODO-(用 .attr 把圓心移到正中央)
+                .attr({
+                    "transform": "translate(" + (w * 1 / 2) + "," + (h * 1 / 2) + ")"
+                })
+                .select("path")
+                .attr("d", arc)
+                .style("fill", function(d, i) {
+                    return fScale(i);
+                });
+
+            d3.selectAll("g.arc")
+                .select("text")
+                .attr("transform", function(d) {
+                    return "translate(" + arc.centroid(d) + ")";
+                }) //arc.centroid 計算並回傳此元素中心位置(重心)
+                .attr("text-anchor", "middle")
+                .text(function(d) {
+                    return d.data.genre + "  " + d.data.percentage + " %";
+                })
+
+
+        }
+
+        // ----------- 資料綁定 & 畫圖二 -----------
+
+        function bind2(dataSet2) {
+
+            var pie = d3.layout.pie()
+                .value(function(d) {
+                    return d.percentage;
+                });
+
+            var selection_2 = d3.select("svg.svg2")
+                .selectAll("g.arc")
+                .data(pie(dataSet2));
+
+
+
+            var g_arc = selection_2.enter().append("g").attr("class", "arc2");
+            g_arc.append("path");
+            g_arc.append("text");
+            selection_2.exit().remove();
+        }
+
+        function render2(dataSet2) {
+            var outerR = 150;
+            var innerR = 50;
+            var arc = d3.svg.arc()
+                .outerRadius(outerR)
+                .innerRadius(innerR);
+
+            var fScale = d3.scale.category20();
+
+            d3.selectAll("g.arc2")
+                //TODO-(用 .attr 把圓心移到正中央)
+                .attr({
+                    "transform": "translate(" + (w * 1 / 2) + "," + (h * 1 / 2) + ")"
+                })
+                .select("path")
+                .attr("d", arc)
+                .style("fill", function(d, i) {
+                    return fScale(i);
+                });
+
+            d3.selectAll("g.arc2")
+                .select("text")
+                .attr("transform", function(d) {
+                    return "translate(" + arc.centroid(d) + ")";
+                }) //arc.centroid 計算並回傳此元素中心位置(重心)
+                .attr("text-anchor", "middle")
+                .text(function(d) {
+                    return d.data.genre + "  " + d.data.percentage + " %";
+                })
+
+        }
+
+        // ----------- 資料綁定 & 畫圖三 -----------
+
+        function bind3(dataSet3) {
+
+            var pie = d3.layout.pie()
+                .value(function(d) {
+                    return d.percentage;
+                });
+
+            var selection_3 = d3.select("svg.svg3")
+                .selectAll("g.arc")
+                .data(pie(dataSet3));
+
+
+
+            var g_arc = selection_3.enter().append("g").attr("class", "arc3");
+            g_arc.append("path");
+            g_arc.append("text");
+            selection_3.exit().remove();
+        }
+
+        function render3(dataSet3) {
+            var outerR = 150;
+            var innerR = 50;
+            var arc = d3.svg.arc()
+                .outerRadius(outerR)
+                .innerRadius(innerR);
+
+            var fScale = d3.scale.category20();
+
+            d3.selectAll("g.arc3")
+                //TODO-(用 .attr 把圓心移到正中央)
+                .attr({
+                    "transform": "translate(" + (w * 1 / 2) + "," + (h * 1 / 2) + ")"
+                })
+                .select("path")
+                .attr("d", arc)
+                .style("fill", function(d, i) {
+                    return fScale(i);
+                });
+
+            d3.selectAll("g.arc3")
+                .select("text")
+                .attr("transform", function(d) {
+                    return "translate(" + arc.centroid(d) + ")";
+                }) //arc.centroid 計算並回傳此元素中心位置(重心)
+                .attr("text-anchor", "middle")
+                .text(function(d) {
+                    return d.data.genre + "  " + d.data.percentage + " %";
+                })
+
+        }
+
+        // ----------- 資料綁定 & 畫圖四 -----------
+
+        function bind4(dataSet4) {
+
+            var pie = d3.layout.pie()
+                .value(function(d) {
+                    return d.percentage;
+                });
+
+            var selection_4 = d3.select("svg.svg4")
+                .selectAll("g.arc")
+                .data(pie(dataSet4));
+
+
+
+            var g_arc = selection_4.enter().append("g").attr("class", "arc4");
+            g_arc.append("path");
+            g_arc.append("text");
+            selection_4.exit().remove();
+        }
+
+        function render4(dataSet4) {
+            var outerR = 150;
+            var innerR = 50;
+            var arc = d3.svg.arc()
+                .outerRadius(outerR)
+                .innerRadius(innerR);
+
+            var fScale = d3.scale.category20();
+
+            d3.selectAll("g.arc4")
+                //TODO-(用 .attr 把圓心移到正中央)
+                .attr({
+                    "transform": "translate(" + (w * 1 / 2) + "," + (h * 1 / 2) + ")"
+                })
+                .select("path")
+                .attr("d", arc)
+                .style("fill", function(d, i) {
+                    return fScale(i);
+                });
+
+            d3.selectAll("g.arc4")
+                .select("text")
+                .attr("transform", function(d) {
+                    return "translate(" + arc.centroid(d) + ")";
+                }) //arc.centroid 計算並回傳此元素中心位置(重心)
+                .attr("text-anchor", "middle")
+                .text(function(d) {
+                    return d.data.genre + "  " + d.data.percentage + " %";
+                })
+
+        }
+    </script>
+
+
+
+</body>
+
+</html>

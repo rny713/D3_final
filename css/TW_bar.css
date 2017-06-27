@@ -1,0 +1,32 @@
+body {
+    background: #eee;
+}
+
+body > svg > g > text {
+    font-size: 15px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+h1 {
+    font-family: sans-serif;
+    color: darkblue;
+    margin-top: 45px;
+}
+
+header > a {
+    font-size: 20px;
+    font-family: sans-serif;
+    margin-right: 15px;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: antiquewhite;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}

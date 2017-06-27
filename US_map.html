@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Untitled Document</title>
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <link rel="stylesheet" href="css/US_map.css">
+</head>
+
+<body>
+    <header>
+        <a href="index.html">台灣</a>
+        <a href="JP_pie.html">日本</a>
+        <a href="US_map.html">美國</a>
+    </header>
+    <h1 class="music">美國各州暢銷音樂類型</h1>
+    <svg width="1200" height="420" class="music"></svg>
+    <div class="Alternative">
+        <p>Alternative</p>
+    </div>
+    <div class="Country">
+        <p>Country</p>
+    </div>
+    <div class="EDM">
+        <p>EDM</p>
+    </div>
+    <div class="Metal">
+        <p>Metal</p>
+    </div>
+    <div class="Folk_Rock">
+        <p>Folk Rock</p>
+    </div>
+    <div class="Latin">
+        <p>Latin</p>
+    </div>
+    <div class="Pop">
+        <p>Pop</p>
+    </div>
+    <div class="Rock">
+        <p>Rock</p>
+    </div>
+
+    <h1 class="election">2016 美國總統大選得票圖</h1>
+    <svg width="1200" height="420" class="election"></svg>
+    <div class="Hillary">
+        <p>希拉蕊</p>
+    </div>
+    <div class="Trump">
+        <p>川普</p>
+    </div>
+
+
+
+    <script>
+        // ------------- 地圖一 ------------------ 
+
+
+        //1.地理資料檔: GeoJSON or TopoJSON
+        d3.json("usa-map.json", function(mapDataSet) {
+
+            //            console.log(mapDataSet);
+
+            bind(mapDataSet);
+            //  render();
+            bind2(mapDataSet);
+            //    render();
+
+        });
+
+        /* function render() {
+             //從這裡開始修改
+             var fScale = d3.scale.category20();
+             var tmp_color;
+
+         } */
+
+        function bind(geoRoot) {
+
+            // 2.地理投影器: 設定投影方式(麥卡托)、定位點([經度,緯度])、縮放(scale)
+            var projection = d3.geo.mercator().center([-100, 35]).scale(700);
+
+            // 3.路徑產生器: d3.geo.path()
+            var path = d3.geo.path().projection(projection);
+
+            //            // 4.地理資料檔: 使用topojson.js載入地理資料
+            //            var geoRoot = topojson.feature(topoRoot, topoRoot.objects["???"]);
+
+
+            //console.log(geoRoot);
+
+            // 綁定path與載入的地理資料(features:每一地理區劃)
+            var selection = d3.select("svg.music").selectAll("path").data(geoRoot.features);
+
+            selection.enter().append("path").classed("map-boundary", true)
+                .attr("d", path);
+            selection.exit().remove();
+
+        }
+
+        // ------------- 地圖二 ------------------ 
+
+
+        function bind2(geoRoot) {
+
+            // 2.地理投影器: 設定投影方式(麥卡托)、定位點([經度,緯度])、縮放(scale)
+            var projection = d3.geo.mercator().center([-100, 35]).scale(700);
+
+            // 3.路徑產生器: d3.geo.path()
+            var path = d3.geo.path().projection(projection);
+
+            //            // 4.地理資料檔: 使用topojson.js載入地理資料
+            //            var geoRoot = topojson.feature(topoRoot, topoRoot.objects["???"]);
+
+
+            //console.log(geoRoot);
+
+            // 綁定path與載入的地理資料(features:每一地理區劃)
+            var selection = d3.select("svg.election").selectAll("path").data(geoRoot.features);
+
+            selection.enter().append("path").classed("map-boundary", true)
+                .attr("d", path);
+            selection.exit().remove();
+
+        }
+    </script>
+
+</body>
+
+</html>
